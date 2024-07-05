@@ -70,7 +70,7 @@ const Carousel = () => {
       {/* Navigation Dots */}
       <div
         className="absolute bottom-12 bg-slate-500 gap-2 p-2 px-3 bg-opacity-10 left-1/2 transform -translate-x-1/2 flex space-x-2"
-        style={{ borderRadius: "15px" }}
+        style={{ borderRadius: "20px" }}
       >
         {images.map((_, index) => (
           <div

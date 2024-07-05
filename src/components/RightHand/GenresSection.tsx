@@ -84,7 +84,7 @@ export const GenresSection = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-4 justify-center w-full px-8">
+        <div className="flex flex-wrap gap-4 justify-center w-full px-4">
           {movies.map((movie, index) => (
             <MovieCard
               key={index}
@@ -98,7 +98,7 @@ export const GenresSection = () => {
   );
 };
 
-const MovieCard = ({ movie, isActive }: any) => (
+const MovieCard = ({ movie, isActive}: any) => (
   <div
     className={`w-[calc(50%-1rem)] transition-all duration-300`}
     style={{
