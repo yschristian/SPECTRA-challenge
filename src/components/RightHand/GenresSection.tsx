@@ -2,10 +2,20 @@ import React, { useState } from "react";
 import { GrFormPrevious } from "react-icons/gr";
 import { MdNavigateNext } from "react-icons/md";
 
-export const GenresSection = () => {
+interface Movie {
+  title: string;
+  image: string;
+}
+
+interface MovieCardProps {
+  movie: Movie;
+  isActive: boolean;
+}
+
+export const GenresSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const movies = [
+  const movies: Movie[] = [
     {
       title: "Stand-Up",
       image:
@@ -44,16 +54,16 @@ export const GenresSection = () => {
     <div className="bg-[#1A1A19] py-8 h-full w-full">
       <div className="flex flex-col items-center">
         <div className="flex justify-between w-full px-8 items-center mb-4">
-          <h3 className="text-white text-2xl font-bold" style={{lineHeight:"24px"}}>Genres</h3>
+          <h3 className="text-white text-2xl font-bold" style={{ lineHeight: "24px" }}>
+            Genres
+          </h3>
           <div className="flex items-center gap-4">
             <div className="flex -ml-[100px]">
               <button
                 onClick={prevMovie}
                 disabled={currentIndex === 0}
                 className={`text-white text-2xl p-1 rounded transition-colors ${
-                  currentIndex === 0
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-[#555]"
+                  currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-[#555]"
                 }`}
               >
                 <GrFormPrevious />
@@ -62,9 +72,7 @@ export const GenresSection = () => {
                 onClick={nextMovie}
                 disabled={currentIndex === movies.length - 1}
                 className={`text-white text-2xl p-1 rounded transition-colors ${
-                  currentIndex === movies.length - 1
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-[#555]"
+                  currentIndex === movies.length - 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-[#555]"
                 }`}
               >
                 <MdNavigateNext />
@@ -75,9 +83,7 @@ export const GenresSection = () => {
               onClick={nextMovie}
               disabled={currentIndex === movies.length - 1}
               className={`text-white text-2xl p-1 rounded transition-colors ${
-                currentIndex === movies.length - 1
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-[#555]"
+                currentIndex === movies.length - 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-[#555]"
               }`}
             >
               <MdNavigateNext />
@@ -98,7 +104,7 @@ export const GenresSection = () => {
   );
 };
 
-const MovieCard = ({ movie, isActive}: any) => (
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => (
   <div
     className={`w-[calc(50%-1rem)] transition-all duration-300`}
     style={{

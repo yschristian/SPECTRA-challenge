@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { GrFormPrevious } from "react-icons/gr";
 import { MdNavigateNext } from "react-icons/md";
@@ -26,6 +26,17 @@ const Carousel = () => {
   ];
 
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleNext = () => {
     setCurrent((current + 1) % images.length);
@@ -36,46 +47,44 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative bg-black p-8">
-      {/* Image Section */}
-      <div className="relative w-full h-[459px] rounded-lg overflow-hidden">
+    <div className="relative bg-black p-4 md:p-8">
+      <div className="relative w-full h-[300px] md:h-[459px] rounded-lg overflow-hidden">
         <img
           src={images[current].img}
           alt={images[current].title}
           className="w-full h-full object-cover rounded-lg"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70 rounded-lg"></div>
-        <div className="absolute bottom-10 left-20 py-24 text-white space-y-3">
-          <div className="py-4 ">
-            <h1 className="text-4xl py-5  font-bold">{images[current].title}</h1>
-            <p className="text-lg max-w-lg tracking-wide  font-normal leading-[19.8px]">
+        <div className="absolute bottom-4 md:bottom-10 left-4 md:left-20 py-4 md:py-24 text-white space-y-2 md:space-y-3">
+          <div className="py-2 md:py-4">
+            <h1 className="text-2xl md:text-4xl py-2 md:py-5 font-bold">{images[current].title}</h1>
+            <p className="text-sm md:text-lg max-w-lg tracking-wide font-normal leading-[19.8px]">
               {images[current].desc}
             </p>
           </div>
-          <div className="flex space-x-3">
-            <button className="bg-[#B0EDDB] text-[#16181E] pt-[13px] pr-[41px] pb-[13px] pl-[41px] rounded-[30px] font-extrabold text-lg">
+          <div className="flex space-x-2 md:space-x-3">
+            <button className="bg-[#B0EDDB] text-[#16181E] px-4 md:px-8 py-2 md:py-3 rounded-[30px] font-bold text-sm md:text-lg">
               Watch
             </button>
-            <div className="bg-white bg-opacity-50 gap-4  text-[#F9F9F9] px-4 py-2 rounded-2xl flex items-center justify-center">
-              <button className="text-xl font-medium">Details</button>
-              <FaAngleDown className="text-2xl text-[#F9F9F9] text-center" />
+            <div className="bg-white bg-opacity-50 gap-2 md:gap-4 text-[#F9F9F9] px-3 md:px-4 py-2 rounded-2xl flex items-center justify-center">
+              <button className="text-sm md:text-xl font-medium">Details</button>
+              <FaAngleDown className="text-lg md:text-2xl text-[#F9F9F9] text-center" />
             </div>
-            <button className="bg-white bg-opacity-50 text-[#F9F9F9] text-2xl px-4 py-2 rounded">
+            <button className="bg-white bg-opacity-50 text-[#F9F9F9] text-xl md:text-2xl px-3 md:px-4 py-1 md:py-2 rounded">
               +
             </button>
           </div>
         </div>
       </div>
 
-      {/* Navigation Dots */}
       <div
-        className="absolute bottom-12 bg-slate-500 gap-2 p-2 px-3 bg-opacity-10 left-1/2 transform -translate-x-1/2 flex space-x-2"
+        className="absolute bottom-6 md:bottom-12 bg-slate-500 gap-1 md:gap-2 p-1 md:p-2 px-2 md:px-3 bg-opacity-10 left-1/2 transform -translate-x-1/2 flex space-x-1 md:space-x-2"
         style={{ borderRadius: "20px" }}
       >
         {images.map((_, index) => (
           <div
             key={index}
-            className={`w-4 h-4 rounded-full cursor-pointer ${
+            className={`w-2 h-2 md:w-4 md:h-4 rounded-full cursor-pointer ${
               index === current ? "bg-[#B0EDDB]" : "bg-gray-400"
             }`}
             onClick={() => setCurrent(index)}
@@ -83,26 +92,29 @@ const Carousel = () => {
         ))}
       </div>
 
-      {/* Navigation Buttons */}
-      {current !== 0 && (
-        <div className="absolute top-1/2 left-12 transform -translate-y-1/2">
-          <button
-            onClick={handlePrev}
-            className="text-white text-2xl px-3 py-1 rounded-full"
-          >
-            < GrFormPrevious className="tex-xl"/>
-          </button>
-        </div>
-      )}
-      {current !== images.length - 1 && (
-        <div className="absolute top-1/2 right-12 transform -translate-y-1/2">
-          <button
-            onClick={handleNext}
-            className="text-white text-2xl px-3 py-1 rounded-full"
-          >
-            <MdNavigateNext />
-          </button>
-        </div>
+      {!isMobile && (
+        <>
+          {current !== 0 && (
+            <div className="absolute top-1/2 left-4 md:left-12 transform -translate-y-1/2">
+              <button
+                onClick={handlePrev}
+                className="text-white text-xl md:text-2xl px-2 md:px-3 py-1 rounded-full"
+              >
+                <GrFormPrevious className="text-xl md:text-2xl" />
+              </button>
+            </div>
+          )}
+          {current !== images.length - 1 && (
+            <div className="absolute top-1/2 right-4 md:right-12 transform -translate-y-1/2">
+              <button
+                onClick={handleNext}
+                className="text-white text-xl md:text-2xl px-2 md:px-3 py-1 rounded-full"
+              >
+                <MdNavigateNext className="text-xl md:text-2xl" />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

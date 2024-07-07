@@ -1,18 +1,27 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import Navbar from '@/components/Navbar/Navbar';
-import '@testing-library/jest-dom/extend-expect';
+import { BrowserRouter } from 'react-router-dom';
+import Layout from '../components/Navbar/Navbar'; 
 
-describe('Navbar', () => {
+
+jest.mock('../components/RightHand/RightHand', () => ({
+  RightHand: () => <div data-testid="right-hand">Mocked RightHand</div>
+}));
+
+const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
+  window.history.pushState({}, 'Test page', route);
+  return render(ui, { wrapper: BrowserRouter });
+};
+
+describe('Layout', () => {
   test('renders the SPECTRA logo', () => {
-    render(<Navbar />);
+    renderWithRouter(<Layout />);
     const logoElement = screen.getByText(/SPECTRA/i);
     expect(logoElement).toBeInTheDocument();
   });
 
   test('renders navigation links', () => {
-    render(<Navbar />);
+    renderWithRouter(<Layout />);
     const moviesLink = screen.getByText(/Movies/i);
     const tvShowsLink = screen.getByText(/TV Shows/i);
     const discoverLink = screen.getByText(/Discover/i);
@@ -22,26 +31,23 @@ describe('Navbar', () => {
     expect(discoverLink).toBeInTheDocument();
   });
 
-  test('applies active class to TV Shows link', () => {
-    render(<Navbar />);
+  test('applies active class to TV Shows link when on home route', () => {
+    renderWithRouter(<Layout />, { route: '/' });
     const tvShowsLink = screen.getByText(/TV Shows/i);
     expect(tvShowsLink).toHaveClass('text-[#b7f7e3]');
-    expect(tvShowsLink).toHaveClass('border-b-2');
+    expect(tvShowsLink).toHaveClass('border-b-4');
   });
 
-  test('navigates to correct pages on link click', () => {
-    render(<Navbar />);
-    const moviesLink = screen.getByText(/Movies/i);
-    const tvShowsLink = screen.getByText(/TV Shows/i);
+  test('applies active class to Discover link when on discover route', () => {
+    renderWithRouter(<Layout />, { route: '/discover' });
     const discoverLink = screen.getByText(/Discover/i);
+    expect(discoverLink).toHaveClass('text-[#b7f7e3]');
+    expect(discoverLink).toHaveClass('border-b-4');
+  });
 
-    userEvent.click(moviesLink);
-    expect(window.location.href).toContain('#');
-
-    userEvent.click(tvShowsLink);
-    expect(window.location.href).toContain('#');
-
-    userEvent.click(discoverLink);
-    expect(window.location.href).toContain('#');
+  test('renders RightHand component', () => {
+    renderWithRouter(<Layout />);
+    const rightHandComponent = screen.getByTestId('right-hand');
+    expect(rightHandComponent).toBeInTheDocument();
   });
 });

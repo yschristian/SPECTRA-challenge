@@ -3,6 +3,15 @@ import { GrFormPrevious } from "react-icons/gr";
 import { MdNavigateNext } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
 
+interface Movie {
+  image: string;
+  title: string;
+}
+
+interface MovieCardProps {
+  movie: Movie;
+}
+
 export const CollectionSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -35,7 +44,12 @@ export const CollectionSection = () => {
     <div className="bg-[#1A1A19] py-8 w-full">
       <div className="flex flex-col items-center">
         <div className="flex justify-between w-full px-8 items-center mb-4">
-          <h3 className="text-white text-2xl font-bold" style={{lineHeight:"24px"}}>Collections</h3>
+          <h3
+            className="text-white text-2xl font-bold"
+            style={{ lineHeight: "24px" }}
+          >
+            Collections
+          </h3>
           <div className="flex items-center gap-4">
             <div className="flex -ml-[100px]">
               <button
@@ -80,7 +94,7 @@ export const CollectionSection = () => {
             <MovieCard
               key={index}
               movie={movie}
-              isActive={index === currentIndex}
+              // isActive={index === currentIndex}
             />
           ))}
         </div>
@@ -89,10 +103,8 @@ export const CollectionSection = () => {
   );
 };
 
-const MovieCard = ({ movie, isCurrent }: any) => (
-  <div
-    className={` border-[#16181E] w-[250px] transition-all duration-300 `}
-  >
+const MovieCard: React.FC<MovieCardProps>  = ({ movie }) => (
+  <div className={` border-[#16181E] w-[250px] transition-all duration-300 `}>
     {/* ${isCurrent ? 'opacity-100 scale-100' : 'opacity-50 scale-95'} */}
     <div
       className="flex rounded-md p-3"
@@ -103,7 +115,10 @@ const MovieCard = ({ movie, isCurrent }: any) => (
       }}
     >
       <div className="ml-4 ">
-        <h4 className="text-white text-[16px] mb-24 font-bold leading-4" style={{lineHeight:"16px"}}>
+        <h4
+          className="text-white text-[16px] mb-24 font-bold leading-4"
+          style={{ lineHeight: "16px" }}
+        >
           {movie.title}
         </h4>
         <div className="flex gap-8 mt-4">
